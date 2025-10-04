@@ -1,0 +1,193 @@
+/// --------------------------------------------------
+/// base/_global.scss
+/// --------------------------------------------------
+/// This file is intended for defining global styles that
+/// apply across the entire project, such as base typography,
+/// default element styles, or utility classes. Use this file
+/// to set up foundational styles that are not covered by the
+/// CSS reset (see base/_reset.scss) but should be available
+/// everywhere. Keep these rules minimal and generic to avoid
+/// conflicts with component or layout-specific styles.
+/// --------------------------------------------------
+
+@use "../abstracts/index.scss" as *;
+
+* {
+   font-family: 'Poppins', sans-serif;
+}
+
+#__nuxt {
+   height: 100%;
+   width: 100%;
+}
+
+body {
+   min-height: 100dvh;
+   min-width: 100dvw;
+}
+
+// Input styling with animations and proper color system
+input {
+   // Base styling
+   padding: px-to-rem(12) px-to-rem(16);
+   border: 2px solid get-color("green-1", 300);
+   border-radius: px-to-rem(8);
+   background-color: get-color("yellow", 400);
+   color: get-color("green-4", 800);
+   font-size: px-to-rem(16);
+   font-weight: 400;
+   line-height: 1.5;
+   outline: none;
+   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+   box-shadow: 0 2px 4px rgba(get-color("green-4", 500), 0.1);
+   color: get-color("green-4", 500);
+   caret-color: get-color("green-4", 600);
+
+   // Placeholder styling
+   &::placeholder {
+      color: get-color("green-1", 500);
+      opacity: 0.7;
+      transition: opacity 0.3s ease;
+   }
+
+   // Focus state with smooth animation
+   &:focus {
+      border-color: get-color("green-2", 500);
+      border-color: get-color("green-3", 400);
+      background-color: get-color("yellow", 400);
+      box-shadow:
+         0 0 0 3px rgba(get-color("green-2", 500), 0.2),
+         0 4px 12px rgba(get-color("green-4", 500), 0.15);
+      transform: translateY(-1px);
+
+      &::placeholder {
+         opacity: 0.5;
+      }
+   }
+
+   // Hover state
+   &:hover:not(:focus):not(:disabled) {
+      border-color: get-color("green-3", 400);
+      background-color: get-color("yellow", 400);
+      box-shadow: 0 4px 8px rgba(get-color("green-4", 500), 0.12);
+   }
+
+   // Disabled state
+   &:disabled {
+      background-color: get-color("green-1", 100);
+      border-color: get-color("green-1", 200);
+      color: get-color("green-1", 400);
+      cursor: not-allowed;
+      opacity: 0.6;
+
+      &::placeholder {
+         color: get-color("green-1", 300);
+      }
+   }
+
+   // Error state
+   &:invalid:not(:placeholder-shown) {
+      border-color: get-color("green-4", 600);
+      background-color: get-color("yellow", 700);
+      box-shadow: 0 0 0 3px rgba(get-color("green-4", 500), 0.1);
+
+      &::placeholder {
+         color: get-color("green-4", 500);
+      }
+   }
+
+   // Success state (when valid and has content)
+   // &:valid:not(:placeholder-shown) {
+   //    border-color: get-color("green-3", 400);
+   //    // background-color: rgba(get-color("green-2", 500), 0.05);
+   //    background-color: get-color("yellow", 400);
+   // }
+
+   // Active state
+   &:active:not(:disabled) {
+      transform: translateY(0);
+      box-shadow:
+         0 0 0 3px rgba(get-color("green-2", 500), 0.3),
+         0 2px 4px rgba(get-color("green-4", 500), 0.2);
+   }
+}
+
+// Textarea styling (inherits similar styling to input)
+textarea {
+   @extend input;
+   min-height: px-to-rem(100);
+   resize: vertical;
+   font-family: inherit;
+}
+
+// Select styling for consistency
+select {
+   @extend input;
+   cursor: pointer;
+   background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%2373A9AD' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='m6 8 4 4 4-4'/%3e%3c/svg%3e");
+   background-position: right px-to-rem(12) center;
+   background-repeat: no-repeat;
+   background-size: px-to-rem(16);
+   padding-right: px-to-rem(40);
+
+   &:focus {
+      background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%23C4DFAA' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='m6 8 4 4 4-4'/%3e%3c/svg%3e");
+   }
+}
+
+// Checkbox and radio button styling
+input[type="checkbox"],
+input[type="radio"] {
+   width: px-to-rem(20);
+   height: px-to-rem(20);
+   border: 2px solid get-color("green-1", 300);
+   border-radius: px-to-rem(4);
+   background-color: get-color("yellow", 50);
+   cursor: pointer;
+   transition: all 0.2s ease;
+   margin-right: px-to-rem(8);
+
+   &:checked {
+      background-color: get-color("green-2", 500);
+      border-color: get-color("green-2", 600);
+      background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 16 16'%3e%3cpath stroke='%23ffffff' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='m13.854 3.646-7.5 7.5a.5.5 0 0 1-.708 0l-3.5-3.5a.5.5 0 1 1 .708-.708L6 10.293l7.146-7.147a.5.5 0 0 1 .708.708z'/%3e%3c/svg%3e");
+   }
+
+   &:focus {
+      outline: 2px solid get-color("green-2", 500);
+      outline-offset: 2px;
+   }
+
+   &:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+   }
+}
+
+// Radio button specific styling
+input[type="radio"] {
+   border-radius: 50%;
+
+   &:checked {
+      background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='%23ffffff' viewBox='0 0 16 16'%3e%3ccircle cx='8' cy='8' r='3'/%3e%3c/svg%3e");
+   }
+}
+
+a {
+   transition: all 0.3s ease;
+
+   &:hover {
+      text-decoration: underline;
+   }
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p {
+   user-select: none;
+   cursor: default;
+}

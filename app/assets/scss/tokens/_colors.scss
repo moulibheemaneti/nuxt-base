@@ -1,0 +1,74 @@
+@use "sass:map";
+@use "sass:color";
+
+// --------------------------
+// Base flat color map
+// --------------------------
+$color-map: (
+   "yellow": #F5F0BB,
+   "green-1": #90C8AC,
+   "green-2": #C4DFAA,
+   "green-3": #73A9AD,
+   "green-4": #006769,
+);
+
+// --------------------------
+// Lightness scale (relative adjustments)
+// --------------------------
+// These values are *offsets* relative to the base color (500).
+// Positive = lighter, Negative = darker.
+$lightness-offsets: (
+   50: +45%,
+   100: +35%,
+   200: +25%,
+   300: +15%,
+   400: +7%,
+   500: 0%,
+   // <-- exact base color
+   600: -7%,
+   700: -15%,
+   800: -25%,
+   900: -35%,
+   950: -45%,
+);
+
+// --------------------------
+// Function: generate shades from base color
+// --------------------------
+@function generate-shades-hsl($base, $offsets) {
+   // $h: color.hue($base);
+   $h: color.channel($base, "hue", $space: hsl);
+   $s: color.channel($base, "saturation", $space: hsl);
+   $l: color.channel($base, "lightness", $space: hsl); // <-- base color's actual lightness
+   $shades: (
+   );
+
+@each $step, $offset in $offsets {
+   $shade-lightness: $l + $offset;
+
+   // clamp between 0% and 100%
+   @if $shade-lightness < 0% {
+      $shade-lightness: 0%;
+   }
+
+   @if $shade-lightness >100% {
+      $shade-lightness: 100%;
+   }
+
+   $color: if($offset ==0%, $base, hsl($h, $s, $shade-lightness));
+   $shades: map.merge($shades, ($step: $color));
+}
+
+@return $shades;
+}
+
+// --------------------------
+// Build the nested map
+// --------------------------
+$color-map-with-shades: (
+);
+
+@each $name, $base in $color-map {
+   $shades: generate-shades-hsl($base, $lightness-offsets);
+   $color-map-with-shades: map.merge($color-map-with-shades, ($name: $shades));
+}

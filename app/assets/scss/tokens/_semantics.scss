@@ -1,0 +1,9 @@
+@use "sass:map";
+
+@use "../tokens/colors" as *;
+
+$semantics-map: (
+   "bg": map.get($color-map-with-shades, "yellow", 500),
+   "text": map.get($color-map-with-shades, "green-4", 400),
+   "text-accent": map.get($color-map-with-shades, "green-4", 500),
+);
